@@ -1,0 +1,35 @@
+# Verwende die aktuellste Node.js-Version
+FROM node:20
+
+# Setze das Arbeitsverzeichnis
+WORKDIR /app
+
+# Installiere Git, um Repositories klonen zu können
+RUN apt-get update && apt-get install -y git
+
+# Kopiere das Startskript
+COPY bootstrap.sh /usr/local/bin/bootstrap.sh
+RUN chmod +x /usr/local/bin/bootstrap.sh
+
+# Definiere Standard-Umgebungsvariablen (überschreibbar), für InfluxDB 1.x und 2.x
+ENV GIT_URL=https://github.com/example/default-app.git \
+    APP_PORT=8080 \
+    SQLHOST=db \
+    SQLPORT=3306 \
+    SQLUSER=root \
+    SQLPSW=secret \
+    SQLDB=mydb \
+    APP_STARTUP=index.js \
+    INFLUX_HOST=influxdb \
+    INFLUX_PORT=8086 \
+    # InfluxDB 1.x Variablen
+    INFLUX_USER=your-username \
+    INFLUX_PSW=your-password \
+    INFLUX_DB=your-influxdb-database \
+    # InfluxDB 2.x Variablen
+    INFLUX_TOKEN=your-influxdb-token \
+    INFLUX_ORG=your-org \
+    INFLUX_BUCKET=your-bucket
+
+# Starte das Skript beim Container-Start
+ENTRYPOINT ["/usr/local/bin/bootstrap.sh"]
