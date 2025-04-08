@@ -1,5 +1,5 @@
-# Verwende die aktuellste Node.js-Version
-FROM node:20
+# Verwende die aktuellste Node.js-Version (Node 20 ist die neueste LTS, aber "latest" ist auch okay)
+FROM node:latest
 
 # Setze das Arbeitsverzeichnis
 WORKDIR /app
@@ -11,21 +11,17 @@ RUN apt-get update && apt-get install -y git
 COPY bootstrap.sh /usr/local/bin/bootstrap.sh
 RUN chmod +x /usr/local/bin/bootstrap.sh
 
-# Definiere Standard-Umgebungsvariablen (überschreibbar), für InfluxDB 1.x und 2.x
-ENV GIT_URL=https://github.com/example/default-app.git \
-    APP_PORT=8080 \
-    SQLHOST=db \
-    SQLPORT=3306 \
-    SQLUSER=root \
-    SQLPSW=secret \
-    SQLDB=mydb \
-    APP_STARTUP=index.js \
+# Definiere Standard-Umgebungsvariablen (überschreibbar)
+ENV GIT_URL=https://github.com/janhajk/fronius_2_influx.git \
+    APP_STARTUP=logData.js \
+    FRONIUS_IP=192.168.1.92 \
+    LOG=false \
     INFLUX_HOST=influxdb \
     INFLUX_PORT=8086 \
     # InfluxDB 1.x Variablen
-    INFLUX_USER=your-username \
-    INFLUX_PSW=your-password \
-    INFLUX_DB=your-influxdb-database \
+    INFLUX_USER=grafana \
+    INFLUX_PSW=11pMw0 \
+    INFLUX_DB=grafana \
     # InfluxDB 2.x Variablen
     INFLUX_TOKEN=your-influxdb-token \
     INFLUX_ORG=your-org \
